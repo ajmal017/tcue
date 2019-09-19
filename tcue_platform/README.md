@@ -42,3 +42,7 @@ de realizar la predicción del comportamiento futuro del mercado. Para solventar
 pasos explicados a continuación:
 
 ![tcue_platform_talib](https://github.com/alvarob96/tcue/blob/master/resources/tcue_platform_talib.gif)
+
+## Autor
+
+**Álvaro Bartolomé del Canto**

@@ -52,3 +52,7 @@ una base de datos _noSQL_, _MongoDB_. A lo largo de la siguiente demo, se podrá
 funcionalidades de la plataforma a la hora de clasificar tweets en sentimientos (**positivo**, **negativo** o **neutral**).
 
 ![tcue_sentiment_demo](https://github.com/alvarob96/tcue/blob/master/resources/tcue_sentiment_demo.gif)
+
+## Autor
+
+**Álvaro Bartolomé del Canto**

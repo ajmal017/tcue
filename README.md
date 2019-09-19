@@ -40,7 +40,9 @@ español junto con la creación de un modelo de lenguaje natural en español.
 ## Estructura
 
 A continuación se desglosará la estructura del repositorio:
-* ``docs/``: en este directorio se encuentran los PDF generados a partir de los Jupyter Notebooks, es decir, los informes
+
+* ``docs/``: en este directorio se encuentra tanto la memoria como la presentación del proyecto en pptx. Adicionalmente,
+se pueden encontrar en este directorio los PDF generados a partir de los Jupyter Notebooks, es decir, los informes
 detallados sobre cada uno de los paquetes y de las funcionalidades implementadas en el proyecto. Estos informes recogen la
 funcionalidad principal de [investpy](https://github.com/alvarob96/investpy), [trendet](https://github.com/alvarob96/trendet) 
 y [twipper](https://github.com/alvarob96/twipper); y, en consecuencia, la integración de los mismos para con la 
@@ -61,3 +63,7 @@ Por tanto, esta es la plataforma central del TCUE que integra el resto de módul
 a través de [twipper](https://github.com/alvarob96/twipper) de una forma más mecánica en sentimientos 
 (**positivo, neutral y negativo**), con el fin de utilizarlos más adelante de cara a crear un modelo de clasificación 
 para el análisis de sentimientos.
+
+## Autor
+
+**Álvaro Bartolomé del Canto**
