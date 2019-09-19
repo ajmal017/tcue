@@ -1,4 +1,8 @@
-# TCUE - Plataforma
+# TCUE - Platform
+
+<div>
+  <img src="https://github.com/alvarob96/tcue/blob/master/resources/tcue_es.png"><br>
+</div>
 
 ## Introducción
 
@@ -15,7 +19,7 @@ podrá realizarse mediante la orden: ``python3 -m pip install -r requirements``.
 [settings.py](https://github.com/alvarob96/tcue/blob/master/tcue_platform/tcue_platform/settings.py) y añadir en la línea
 ``ALLOWED_HOSTS = []`` la IP o nombre del dominio del servidor dónde se va a lanzar el Django.
 
-![tcue_platform_setup](https://raw.githubusercontent.com/alvarob96/tcue/master/resources/tcue_platform_setup.gif)
+![tcue_platform_setup](https://github.com/alvarob96/tcue/blob/master/resources/tcue_platform_setup.gif)
 
 Tras haber modificado el fichero de configuración previamente, añadiendo la IP o IPs válidas, se lanzará el servidor con
 la orden: ``python3 manage.py runserver 0.0.0.0:8000``, siendo 0.0.0.0 la IP pública y 8000 el puerto habilitado para 
@@ -28,12 +32,13 @@ Se presentará un caso de uso de cara a mostrar todas las funcionalidades del si
 A lo largo de la siguiente demo, se podrán observar las principales funcionalidades de la plataforma, así como una serie
 de resultados propuestos a modo de ejemplo.
 
-![tcue_platform_setup](https://raw.githubusercontent.com/alvarob96/tcue/master/resources/tcue_platform_demo.gif)
+![tcue_platform_demo](https://github.com/alvarob96/tcue/blob/master/resources/tcue_platform_demo.gif)
 
 ## Problemas Frecuentes
 
-Uno de los problemas más frecuentes es instalar el paquete [TA-Lib]() para el cálculo de los factores técnicos que serán
-utilizados en combinación con los algoritmos de _Machine Learning_ a la hora de realizar la predicción del comportamiento
-futuro del mercado. Para solventar dicho error será necesario seguir los pasos explicados a continuación:
+Uno de los problemas más frecuentes es instalar el paquete [TA-Lib](https://mrjbq7.github.io/ta-lib/func.html) para el 
+cálculo de los factores técnicos que serán utilizados en combinación con los algoritmos de _Machine Learning_ a la hora 
+de realizar la predicción del comportamiento futuro del mercado. Para solventar dicho error será necesario seguir los 
+pasos explicados a continuación:
 
-![tcue_platform_setup](https://raw.githubusercontent.com/alvarob96/tcue/master/resources/tcue_platform_demo.gif)
+![tcue_platform_talib](https://github.com/alvarob96/tcue/blob/master/resources/tcue_platform_talib.gif)

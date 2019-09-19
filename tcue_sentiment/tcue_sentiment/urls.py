@@ -22,12 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
 
-    path('sentiment/', sentiment, name='sentiment'),
-
-    path('sentiment/classification/', sentiment_classification, name='sentiment_classification'),
-    path('sentiment/classification/positive/', sentiment_positive, name='sentiment_positive'),
-    path('sentiment/classification/neutral/', sentiment_neutral, name='sentiment_neutral'),
-    path('sentiment/classification/negative/', sentiment_negative, name='sentiment_negative'),
-    path('sentiment/classification/none/', sentiment_none, name='sentiment_none'),
-    path('sentiment/classification/refresh/', sentiment_refresh, name='sentiment_refresh'),
+    path('classification/', sentiment_classification, name='sentiment_classification'),
+    path('classification/positive/', sentiment_positive, name='sentiment_positive'),
+    path('classification/neutral/', sentiment_neutral, name='sentiment_neutral'),
+    path('classification/negative/', sentiment_negative, name='sentiment_negative'),
+    path('classification/none/', sentiment_none, name='sentiment_none'),
+    path('classification/refresh/', sentiment_refresh, name='sentiment_refresh'),
 ]
