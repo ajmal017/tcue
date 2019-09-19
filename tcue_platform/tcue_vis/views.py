@@ -45,7 +45,7 @@ def overview(request):
     try:
         obj = investpy.get_equity_company_profile(equity=mesg,
                                                   country='spain',
-                                                  language='english')
+                                                  language='spanish')
     except:
         return render_to_response('error.html')
 
@@ -90,7 +90,7 @@ def recommendation(request):
     try:
         obj = investpy.get_equity_company_profile(equity=mesg,
                                                   country='spain',
-                                                  language='english')
+                                                  language='spanish')
     except:
         return render_to_response('error.html')
 
