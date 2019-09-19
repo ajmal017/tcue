@@ -1,0 +1,266 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Alvaro Bartolome del Canto">
+
+        <title>{% block title %}TCUE | Plataforma{% endblock %}</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'templates/overview.css' %}">
+
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <div class="container mt-5">
+            <div class="jumbotron">
+                <h1>{{ full_name|safe }} - {{ name|safe }}</h1>
+                <hr>
+                <p class="lead">
+                    {{ desc|safe }}
+                </p>
+                <br/>
+                <a class="btn btn-lg btn-primary" href="{{ source|safe }}" role="button">Información Adicional »</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3 class="mt-5 mb-0">Serie Temporal de los Precios de Cierre de {{ name|safe }}</h3>
+            <hr>
+            <div class="row justify-content-center mt-2" id="time_series">
+                <script>
+                    var data = '{{ data_json|safe }}';
+                    var parsedData = JSON.parse(data);
+
+                    var x = [];
+                    var y = [];
+
+                    parsedData['historical'].forEach(function(value) {
+                        var dateList = value['date'].split('/');
+
+                        x.push(new Date(dateList[2], dateList[1], dateList[0]));
+                        y.push(value['close']);
+                    });
+
+                    var final = [
+                        {
+                            x: x,
+                            y: y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Valores de Cierre de ' + parsedData['name']
+                        }
+                    ];
+
+                    var layout = {
+                        showlegend: false,
+                        xaxis: {
+                            type: 'date',
+                            autorange: true,
+                            range: [x[0], x[x.length-1]],
+                            rangeselector: {
+                                buttons: [
+                                    {
+                                        count: 1,
+                                        label: '1 Mes',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 6,
+                                        label: '6 Meses',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 1,
+                                        label: '1 Año',
+                                        step: 'year',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        label: 'Histórico',
+                                        step: 'all',
+                                        stepmode: 'backward'
+                                    }
+                                ]
+                            },
+                            rangeslider: {range: [x[0], x[x.length-1]]},
+                        },
+                        yaxis: {
+                            autorange: true,
+                            fixedrange: false
+                        },
+                        height: 500,
+                        width: 1200,
+                        margin: {
+                            t: 0
+                        }
+                    };
+
+                    Plotly.newPlot('time_series', final, layout, config={"displayModeBar": false});
+                </script>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3 class="mt-0 mb-0">Gráfico de Velas de {{ name|safe }}</h3>
+            <hr>
+            <div class="row justify-content-center mt-2" id="candlestick_chart">
+                <script>
+                    var data = '{{ data_json|safe }}';
+                    var parsedData = JSON.parse(data);
+
+                    var x = [];
+                    var open = [];
+                    var high = [];
+                    var low = [];
+                    var close = [];
+
+                    parsedData['historical'].forEach(function(value) {
+                        var dateList = value['date'].split('/');
+
+                        x.push(new Date(dateList[2], dateList[1], dateList[0]));
+
+                        open.push(value['open']);
+                        high.push(value['high']);
+                        low.push(value['low']);
+                        close.push(value['close']);
+                    });
+
+                    var final = [
+                        {
+                            x: x,
+                            close: close,
+                            decreasing: {
+                                line: {
+                                    color: '#ed9238'
+                                }
+                            },
+                            high: high,
+                            increasing: {
+                                line: {
+                                    color: '#5f9be7'
+                                }
+                            },
+                            line: {
+                                color: 'rgba(31,119,180,1)'
+                            },
+                            low: low,
+                            open: open,
+                            type: 'candlestick',
+                            xaxis: 'x',
+                            yaxis: 'y',
+                            name: 'Gráfico de Velas de ' + parsedData['name']
+                        }
+                    ];
+
+                    var layout = {
+                        showlegend: false,
+                        xaxis: {
+                            type: 'date',
+                            autorange: true,
+                            range: [x[0], x[x.length-1]],
+                            rangeselector: {
+                                buttons: [
+                                    {
+                                        count: 1,
+                                        label: '1 Mes',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 6,
+                                        label: '6 Meses',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 1,
+                                        label: '1 Año',
+                                        step: 'year',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        label: 'Histórico',
+                                        step: 'all',
+                                        stepmode: 'backward'
+                                    }
+                                ]
+                            },
+                            rangeslider: {range: [x[0], x[x.length-1]]},
+                        },
+                        yaxis: {
+                            autorange: true,
+                            fixedrange: false
+                        },
+                        height: 500,
+                        width: 1200,
+                        margin: {
+                            t: 0
+                        }
+                    };
+
+                    Plotly.newPlot('candlestick_chart', final, layout, config={"displayModeBar": false});
+                </script>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <h3 class="mt-5">Datos Históricos de {{ name|safe }}</h3>
+            <hr>
+            <table class="table table-striped mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Apertura</th>
+                        <th scope="col">Máximo</th>
+                        <th scope="col">Mínimo</th>
+                        <th scope="col">Cierre/Último</th>
+                        <th scope="col">Volumen</th>
+                        <th scope="col">Divisa</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in decoded_data.historical|slice:"-10:" reversed %}
+                        <tr>
+                            <th scope="row">{{ row.date }}</th>
+                            <td>{{ row.open }}</td>
+                            <td>{{ row.high }}</td>
+                            <td>{{ row.low }}</td>
+                            <td>{{ row.close }}</td>
+                            <td>{{ row.volume }}</td>
+                            <td>{{ row.currency }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="container mt-5 mb-5">
+            <center>
+                <a class="btn btn-lg btn-primary" href="{% url 'index' %}" role="button">Volver</a>
+            </center>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted text-center">Álvaro Bartolomé del Canto, 2018-2019 @ alvarob96 en GitHub</p>
+            </div>
+        </footer>
+
+    </body>
+</html>

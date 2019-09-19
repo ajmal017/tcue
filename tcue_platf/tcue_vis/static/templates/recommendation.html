@@ -1,0 +1,815 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Alvaro Bartolome del Canto">
+
+        <title>{% block title %}TCUE | Plataforma{% endblock %}</title>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <!-- Bootstrap core CSS/JS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <!-- plotly JS -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+        <!-- Custom styles -->
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'templates/recommendation.css' %}">
+
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body>
+
+        <div class="container mt-5">
+            <div class="jumbotron">
+                <h1>{{ full_name|safe }} - {{ name|safe }}</h1>
+                <hr>
+                <p class="lead">
+                    {{ desc|safe }}
+                </p>
+                <br/>
+                <a class="btn btn-lg btn-primary" href="{{ source|safe }}" role="button">Información Adicional »</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3 class="mt-5 mb-0">Serie Temporal de los Precios de Cierre de {{ name|safe }}</h3>
+            <hr>
+            <div class="row justify-content-center mt-2" id="time_series">
+                <script>
+                    var data = '{{ data_json|safe }}';
+                    var parsedData = JSON.parse(data);
+
+                    var x = [];
+                    var y = [];
+
+                    parsedData['historical'].forEach(function(value) {
+                        var dateList = value['date'].split('/');
+
+                        x.push(new Date(dateList[2], dateList[1], dateList[0]));
+                        y.push(value['close']);
+                    });
+
+                    var final = [
+                        {
+                            x: x,
+                            y: y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Valores de Cierre de ' + parsedData['name']
+                        }
+                    ];
+
+                    var layout = {
+                        showlegend: false,
+                        xaxis: {
+                            type: 'date',
+                            autorange: true,
+                            range: [x[0], x[x.length-1]],
+                            rangeselector: {
+                                buttons: [
+                                    {
+                                        count: 1,
+                                        label: '1 Mes',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 6,
+                                        label: '6 Meses',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 1,
+                                        label: '1 Año',
+                                        step: 'year',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        label: 'Histórico',
+                                        step: 'all',
+                                        stepmode: 'backward'
+                                    }
+                                ]
+                            },
+                            rangeslider: {range: [x[0], x[x.length-1]]},
+                        },
+                        yaxis: {
+                            autorange: true,
+                            fixedrange: false
+                        },
+                        height: 500,
+                        width: 1200,
+                        margin: {
+                            t: 0
+                        }
+                    };
+
+                    Plotly.newPlot('time_series', final, layout, config={"displayModeBar": false});
+                </script>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3 class="mt-0 mb-0">Gráfico de Velas de {{ name|safe }}</h3>
+            <hr>
+            <div class="row justify-content-center mt-2" id="candlestick_chart">
+                <script>
+                    var data = '{{ data_json|safe }}';
+                    var parsedData = JSON.parse(data);
+
+                    var x = [];
+                    var open = [];
+                    var high = [];
+                    var low = [];
+                    var close = [];
+
+                    parsedData['historical'].forEach(function(value) {
+                        var dateList = value['date'].split('/');
+
+                        x.push(new Date(dateList[2], dateList[1], dateList[0]));
+
+                        open.push(value['open']);
+                        high.push(value['high']);
+                        low.push(value['low']);
+                        close.push(value['close']);
+                    });
+
+                    var final = [
+                        {
+                            x: x,
+                            close: close,
+                            decreasing: {
+                                line: {
+                                    color: '#ed9238'
+                                }
+                            },
+                            high: high,
+                            increasing: {
+                                line: {
+                                    color: '#5f9be7'
+                                }
+                            },
+                            line: {
+                                color: 'rgba(31,119,180,1)'
+                            },
+                            low: low,
+                            open: open,
+                            type: 'candlestick',
+                            xaxis: 'x',
+                            yaxis: 'y',
+                            name: 'Gráfico de Velas de ' + parsedData['name']
+                        }
+                    ];
+
+                    var layout = {
+                        showlegend: false,
+                        xaxis: {
+                            type: 'date',
+                            autorange: true,
+                            range: [x[0], x[x.length-1]],
+                            rangeselector: {
+                                buttons: [
+                                    {
+                                        count: 1,
+                                        label: '1 Mes',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 6,
+                                        label: '6 Meses',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 1,
+                                        label: '1 Año',
+                                        step: 'year',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        label: 'Histórico',
+                                        step: 'all',
+                                        stepmode: 'backward'
+                                    }
+                                ]
+                            },
+                            rangeslider: {range: [x[0], x[x.length-1]]},
+                        },
+                        yaxis: {
+                            autorange: true,
+                            fixedrange: false
+                        },
+                        height: 500,
+                        width: 1200,
+                        margin: {
+                            t: 0
+                        }
+                    };
+
+                    Plotly.newPlot('candlestick_chart', final, layout, config={"displayModeBar": false});
+                </script>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <h3 class="mt-5">Datos Históricos de {{ name|safe }}</h3>
+            <hr>
+            <table class="table table-striped mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Apertura</th>
+                        <th scope="col">Máximo</th>
+                        <th scope="col">Mínimo</th>
+                        <th scope="col">Cierre/Último</th>
+                        <th scope="col">Volumen</th>
+                        <th scope="col">Divisa</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in decoded_data.historical|slice:"-10:" reversed %}
+                        <tr>
+                            <th scope="row">{{ row.date }}</th>
+                            <td>{{ row.open }}</td>
+                            <td>{{ row.high }}</td>
+                            <td>{{ row.low }}</td>
+                            <td>{{ row.close }}</td>
+                            <td>{{ row.volume }}</td>
+                            <td>{{ row.currency }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="container mt-5 mb-5">
+            <div class="jumbotron">
+                <h1>Sistema de Recomendación de {{ name|safe }}</h1>
+                <hr>
+                <p class="lead">
+                    A continuación se presenta el sistema de recomendación basado en la identificación de señales de
+                    compra/venta como resultado de la combinación del análisis técnico financiero (técnica tradicional
+                    para determinar el comportamiento futuro del mercado) con algoritmos basados en Inteligencia Artificial.
+                    Esto implica por tanto la combinación de sistemas tradicionales de predicción con sistemas modernos,
+                    con el fin de determinar la correlación o no entre estos a la hora de identificar señales de compra/venta
+                    en base a los valores históricos de una acción (en este caso, una del mercado continuo español).</br></br>
+                    Los algoritmos de ML utilizados han sido los de regresión, en los que a partir de una variable de
+                    entrada (predictor) se predice una variable objetivo (target), analizando así la relación entre ambos.
+                    En este caso, el sistema implementado, a partir de valores históricos de apertura del mercado, busca
+                    predecir los valores de cierre.</br></br>
+                    Los factores técnicos son estrategias propias del análisis técnico que se utilizan para predecir
+                    futuros movimientos u oscilaciones del precio de una acción, analizando los datos históricos y actuales
+                    de dicha acción. Adicionalmente, el análisis técnico también emplea otras medidas como las medias
+                    móviles (SMA & EMA) con el fin de determinar la dirección que tomará el mercado en el futuro en base
+                    a la tendencia actual. Otro de los posibles usos de las medias móviles se centra en la posibilidad de
+                    observar datos suavizados en vez de centrarse en los valores diarios.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h3 class="mt-5 mb-0">Precisión de los Algoritmos de Regresión</h3>
+            <hr>
+            <div class="row justify-content-center mt-2" id="algorithms_accuracy">
+                <script>
+                    var x = {{ algorithms|safe }};
+                    var y = {{ scores|safe }};
+
+                    var data = [
+                        {
+                            x: x,
+                            y: y,
+                            type: 'bar',
+                            text: y.map(String),
+                            textposition: 'auto',
+                            hoverinfo: 'none',
+                            marker: {
+                                color: 'rgb(158,202,225)',
+                                opacity: 0.6,
+                                line: {
+                                    color: 'rgb(8,48,107)',
+                                    width: 1.5
+                                }
+                            }
+                        }
+                    ];
+
+                    var layout = {
+                        xaxis: {
+                            fixedrange: true
+                        },
+                        yaxis: {
+                            range: [Math.min(...y) - .05, 1],
+                            fixedrange: true
+                        },
+                        height: 500,
+                        width: 1200,
+                        margin: {
+                            t: 20
+                        }
+                    };
+
+                    Plotly.newPlot('algorithms_accuracy', data, layout, config={"displayModeBar": false});
+                </script>
+
+                <p>El mejor algoritmo en base a su precisión comparando la predicción con los valores reales es: <b>{{ best_algorithm|safe }}</b></p>
+            </div>
+        </div>
+
+        {{ best_params_modal|safe }}
+
+        <div class="container">
+            <h3 class="mt-5 mb-0">Predicción de {{ name|safe }} utilizando Algoritmos de Regresión</h3>
+            <hr>
+            <div class="row justify-content-center mt-2" id="prediction_plot">
+                <script>
+                    var data = '{{ data_json|safe }}';
+                    var parsedData = JSON.parse(data);
+
+                    var values = {{ all_predictions|safe }};
+
+                    var available_algorithms = ['MLPRegressor', 'SVM-LinearSVR', 'KNeighborsRegressor', 'GradientBoostingRegressor', 'RandomForestRegressor'];
+                    available_algorithms.splice(available_algorithms.indexOf({{ best_algorithm|safe }}), 1);
+
+                    var x = [];
+                    var y = [];
+
+                    parsedData['historical'].forEach(function(value) {
+                        var dateList = value['date'].split('/');
+
+                        x.push(new Date(dateList[2], dateList[1], dateList[0]));
+                        y.push(value['close']);
+                    });
+
+                    var predicted_y = values[{{ best_algorithm|safe }}];
+                    var predicted_x = x.slice(Math.max(x.length - predicted_y.length, 0));
+
+                    var overview = {
+                        x: x,
+                        y: y,
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'Valores de Cierre de ' + parsedData['name']
+                    };
+
+                    var predicted = {
+                        x: predicted_x,
+                        y: predicted_y,
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'Predicción de ' + parsedData['name'] + ' utilizando ' + {{ best_algorithm|safe }},
+                        line: {
+                            color: '#f4a742'
+                        }
+                    };
+
+                    var final = [overview, predicted];
+
+                    available_algorithms.forEach( function (algorithm) {
+                        var predicted_y = values[algorithm];
+                        var predicted_x = x.slice(Math.max(x.length - predicted_y.length, 0));
+
+                        var remaining = {
+                            x: predicted_x,
+                            y: predicted_y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Predicción de ' + parsedData['name'] + ' utilizando ' + algorithm,
+                            visible: 'legendonly'
+                        };
+
+                        final.push(remaining);
+                    });
+
+                    var layout = {
+                        xaxis: {
+                            type: 'date',
+                            autorange: true,
+                            range: [x[x.length-1-253], x[x.length-1]],
+                            rangeselector: {
+                                buttons: [
+                                    {
+                                        count: 1,
+                                        label: '1 Mes',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 6,
+                                        label: '6 Meses',
+                                        step: 'month',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        count: 1,
+                                        label: '1 Año',
+                                        step: 'year',
+                                        stepmode: 'backward'
+                                    },
+                                    {
+                                        label: 'Histórico',
+                                        step: 'all',
+                                        stepmode: 'backward'
+                                    }
+                                ]
+                            },
+                            rangeslider: {
+                                range: [x[x.length-1-253], x[x.length-1]]
+                            },
+                        },
+                        yaxis: {
+                            autorange: true,
+                            fixedrange: false
+                        },
+                        height: 500,
+                        width: 1200,
+                        margin: {
+                            t: 0
+                        }
+                    };
+
+                    Plotly.newPlot('prediction_plot', final, layout, config={"displayModeBar": false});
+                </script>
+
+                <p class="text-center">
+                    Dado que el valor de la predicción para hoy es <b>{{ predicted_close|safe }}</b> y el valor de apertura fue <b>{{ last_open|safe }}</b>.
+                </p>
+                </br>
+                <p class="text-center">
+                    La tendencia de hoy es <b>{{ trend|safe }}</b>, por lo que la recomendación en base a los algoritmos de regresión es <b>{{ hold_prediction|safe }}</b>
+                    dado que el valor actual de la acción es <b>{{ current_value|safe }}</b>.
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3 class="mt-5 mb-0">Predicción de {{ name|safe }} utilizando Análisis Técnico</h3>
+            <hr>
+            <ul>
+                <li><h4>Medias Móviles Simples (SMA)</h4></li>
+                <hr width="25%" align="left">
+
+                <p class="text-center">
+                    Las Medias Móviles (MA) son una importante herramienta analítica con el fin de identificar las tendencias
+                    actuales del mercado en función de sus precios y, también, determinar el potencial de cambio de una
+                    tendencia ya establecida (bien sea alcista o bajista). Una Media Móvil Simple suaviza la volatilidad
+                    sobre el precio de una acción, haciendo así <b>más fácil observar la certeza de una tendencia</b>.
+                </p>
+
+                <div class="row justify-content-center mt-5 mb-0" id="moving_averages_plot">
+                    <script>
+                        var data = '{{ data_json|safe }}';
+                        var parsedData = JSON.parse(data);
+
+                        var dictionary = {{ moving_averages|safe }};
+
+                        var x = [];
+                        var y = [];
+
+                        parsedData['historical'].forEach(function(value) {
+                            var dateList = value['date'].split('/');
+
+                            x.push(new Date(dateList[2], dateList[1], dateList[0]));
+                            y.push(value['close']);
+                        });
+
+                        var overview = {
+                            x: x,
+                            y: y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Valores de Cierre de ' + parsedData['name']
+                        };
+
+                        var keys = [];
+
+                        Object.keys(dictionary).forEach( function(key) {
+                            keys.push(key);
+                        });
+
+                        keys.splice(keys.indexOf('5 days'), 1);
+
+                        var ma_y = dictionary['5 days']['result'];
+                        var ma_x = x.slice(Math.max(x.length - ma_y.length, 0));
+
+                        var remaining = {
+                            x: ma_x,
+                            y: ma_y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Media Móvil - 5 días'
+                        };
+
+                        var final = [overview, remaining];
+
+                        keys.forEach( function(key) {
+                            var ma_y = dictionary[key]['result'];
+                            var ma_x = x.slice(Math.max(x.length - ma_y.length, 0));
+
+                            key = key.replace('days', 'días');
+
+                            var remaining = {
+                                x: ma_x,
+                                y: ma_y,
+                                type: 'scatter',
+                                mode: 'lines',
+                                name: 'Media Móvil Simple - ' + key,
+                                visible: 'legendonly'
+                            };
+
+                            final.push(remaining);
+                        });
+
+                        var layout = {
+                            xaxis: {
+                                type: 'date',
+                                range: [x[x.length-1-253], x[x.length-1]],
+                                rangeselector: {
+                                    buttons: [
+                                        {
+                                            count: 1,
+                                            label: '1 Mes',
+                                            step: 'month',
+                                            stepmode: 'backward'
+                                        },
+                                        {
+                                            count: 6,
+                                            label: '6 Meses',
+                                            step: 'month',
+                                            stepmode: 'backward'
+                                        },
+                                        {
+                                            count: 1,
+                                            label: '1 Año',
+                                            step: 'year',
+                                            stepmode: 'backward'
+                                        },
+                                        {
+                                            label: 'Histórico',
+                                            step: 'all',
+                                            stepmode: 'backward'
+                                        }
+                                    ]
+                                },
+                                rangeslider: {
+                                    range: [x[x.length-1-253], x[x.length-1]]
+                                },
+                            },
+                            yaxis: {
+                                autorange: 'visible',
+                                fixedrange: false
+                            },
+                            height: 500,
+                            width: 1200,
+                            margin: {
+                                t: 0
+                            }
+                        };
+
+                        Plotly.newPlot('moving_averages_plot', final, layout, config={"displayModeBar": false});
+                    </script>
+                </div>
+
+                <table class="table table-striped mt-0 mb-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ventanas Temporales</th>
+                            <th scope="col">SMA</th>
+                            <th scope="col">Señal de SMA</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for key, values in moving_averages.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ values.last_value }}</td>
+                            <td>{{ values.signal|safe }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <p class="text-center">
+                    Si la Media Móvil Simple va hacia arriba, implica que el precio está aumentando, por lo que se identifica una señal de <b>VENTA</b>.
+                </p>
+                <p class="text-center">
+                    Si la Media Móvil Simple va hacia abajo, implica que el precio está disminuyendo, por lo que se identifica una señal de <b>COMPRA</b>.
+                </p>
+                <p class="text-center">
+                    En este caso, se han identificado {{ ma_buy_signals|safe }} señales de COMPRA y {{ ema_sell_signals|safe }} señales de  VENTA, con lo que la recomendación es un movimiento de <b>{{ ma_conclusion|safe }}</b>.
+                </p>
+                </br>
+
+                <li><h4>Medias Móviles Exponenciales (EMA)</h4></li>
+                <hr width="25%" align="left">
+
+                <p class="text-center">
+                    Las Medias Móviles Exponenciales (EMA) son un tipo de Media Móvil que asigna un mayor peso e importancia
+                    a los valores más recientes en lo que a cambios en el mercado se refiere. La principal diferencia, por
+                    tanto, entre las SMA y las EMA reside en que EMA da mayor peso a las observaciones recientes mientras que
+                    SMA asigna un peso igual a todas las observaciones.
+                </p>
+
+                <div class="row justify-content-center mt-5 mb-0" id="exponential_moving_averages_plot">
+                    <script>
+                        var data = '{{ data_json|safe }}';
+                        var parsedData = JSON.parse(data);
+
+                        var dictionary = {{ exponential_moving_averages|safe }};
+
+                        var x = [];
+                        var y = [];
+
+                        parsedData['historical'].forEach(function(value) {
+                            var dateList = value['date'].split('/');
+
+                            x.push(new Date(dateList[2], dateList[1], dateList[0]));
+                            y.push(value['close']);
+                        });
+
+                        var overview = {
+                            x: x,
+                            y: y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Valores de Cierre de '  + parsedData['name']
+                        };
+
+                        var keys = [];
+
+                        Object.keys(dictionary).forEach( function(key) {
+                            keys.push(key);
+                        });
+
+                        keys.splice(keys.indexOf('5 days'), 1);
+
+                        var ema_y = dictionary['5 days']['result'];
+                        var ema_x = x.slice(Math.max(x.length - ema_y.length, 0));
+
+                        var remaining = {
+                            x: ema_x,
+                            y: ema_y,
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: 'Media Móvil Exponencial - 5 días'
+                        };
+
+                        var final = [overview, remaining];
+
+                        keys.forEach( function(key) {
+                            var ema_y = dictionary[key]['result'];
+                            var ema_x = x.slice(Math.max(x.length - ema_y.length, 0));
+
+                            key = key.replace('days', 'días');
+
+                            var remaining = {
+                                x: ema_x,
+                                y: ema_y,
+                                type: 'scatter',
+                                mode: 'lines',
+                                name: 'Media Móvil Exponencial - ' + key,
+                                visible: 'legendonly'
+                            };
+
+                            final.push(remaining);
+                        });
+
+                        var layout = {
+                            xaxis: {
+                                type: 'date',
+                                range: [x[x.length-1-253], x[x.length-1]],
+                                rangeselector: {
+                                    buttons: [
+                                        {
+                                            count: 1,
+                                            label: '1 Mes',
+                                            step: 'month',
+                                            stepmode: 'backward'
+                                        },
+                                        {
+                                            count: 6,
+                                            label: '6 Meses',
+                                            step: 'month',
+                                            stepmode: 'backward'
+                                        },
+                                        {
+                                            count: 1,
+                                            label: '1 Año',
+                                            step: 'year',
+                                            stepmode: 'backward'
+                                        },
+                                        {
+                                            label: 'Histórico',
+                                            step: 'all',
+                                            stepmode: 'backward'
+                                        }
+                                    ]
+                                },
+                                rangeslider: {
+                                    range: [x[x.length-1-253], x[x.length-1]]
+                                },
+                            },
+                            yaxis: {
+                                autorange: true,
+                                fixedrange: false
+                            },
+                            height: 500,
+                            width: 1200,
+                            margin: {
+                                t: 0
+                            }
+                        };
+
+                        Plotly.newPlot('exponential_moving_averages_plot', final, layout, config={"displayModeBar": false});
+                    </script>
+                </div>
+
+                <table class="table table-striped mt-0 mb-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ventanas Temporales</th>
+                            <th scope="col">EMA</th>
+                            <th scope="col">Señal de EMA</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for key, values in exponential_moving_averages.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ values.last_value }}</td>
+                            <td>{{ values.signal|safe }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <p class="text-center">
+                    Las Media Móviles Exponenciales (EMA) son mejores para los mercados bursátiles, dado que cuando el mercado
+                    está en una sólida y consistente tendencia alcista, la línea de la EMA también mostrará una tendencia
+                    alcista; y, viceversa para las tendencias bajistas.
+                </p>
+                <p class="text-center">
+                    En este caso, se han identificado {{ ema_buy_signals|safe }} señales de COMPRA y {{ ema_sell_signals|safe }} señales de VENTA, con lo que la recomendación es un movimiento de <b>{{ ema_conclusion|safe }}</b>.
+                </p>
+                </br>
+
+                <li><h4>Technical Factors</h4></li>
+                <hr width="25%" align="left">
+
+                <div class="row justify-content-center mb-0 mt-2">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Factor Técnico</th>
+                                <th scope="col">Resultado</th>
+                                <th scope="col">Señal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for key, values in tech_factors.items %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ values.result }}</td>
+                                <td>{{ values.signal|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="container mt-5 mb-5">
+            <center>
+                <a class="btn btn-lg btn-primary" href="{% url 'index' %}" role="button">Volver</a>
+            </center>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted text-center">Álvaro Bartolomé del Canto, 2018-2019 @ alvarob96 en GitHub</p>
+            </div>
+        </footer>
+
+    </body>
+</html>
