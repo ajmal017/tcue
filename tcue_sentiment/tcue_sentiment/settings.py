@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'classifier.apps.ClassifierConfig',
+    'tcue_classifier.apps.ClassifierConfig',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'tcue_sentiment.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'classifier/static/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'tcue_classifier/static/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

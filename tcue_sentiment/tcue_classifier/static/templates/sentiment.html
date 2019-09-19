@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="Alvaro Bartolome del Canto">
 
-        <title>{% block title %}Plataforma para Clasificación Supervisada de Tweets {% endblock %}</title>
+        <title>{% block title %}TCUE | Clasificación Supervisada de Tweets {% endblock %}</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -25,13 +25,20 @@
 
     <body>
         <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-            <a href="{% url 'index' %}"><img src="{% static 'templates/tcue_es.png'%}" width="500" height="125"></a>
+            <a href="{% url 'index' %}"><img src="{% static 'resources/tcue_es.png'%}" width="500" height="125"></a>
             <br/><br/><br/>
-            <p class="lead">Plataforma para la Clasificación Supervisada de Tweets en Sentimientos Recuperados con twipper</p>
+            <p class="lead">
+                dadsad
+            </p>
             </br>
-            <button class="btn btn-lg btn-primary btn-block" onclick="location.href='{% url 'sentiment' %}'">Clasificador de Sentimientos</button>
-            </br>
+            <button class="btn btn-lg btn-primary btn-block" onclick="location.href='{% url 'sentiment_classification' %}'">Clasificación de Tweets</button>
         </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted text-center">Álvaro Bartolomé del Canto, 2018-2019 @ alvarob96 en GitHub</p>
+            </div>
+        </footer>
 
     </body>
 </html>
