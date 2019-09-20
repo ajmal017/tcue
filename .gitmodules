@@ -1,0 +1,3 @@
+[submodule "investpy"]
+	path = investpy
+	url = https://github.com/alvarob96/investpy
