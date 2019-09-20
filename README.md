@@ -41,12 +41,16 @@ español junto con la creación de un modelo de lenguaje natural en español.
 
 A continuación se desglosará la estructura del repositorio:
 
-* ``docs/``: en este directorio se encuentra tanto la memoria como la presentación del proyecto en pptx. Adicionalmente,
-se pueden encontrar en este directorio los PDF generados a partir de los Jupyter Notebooks, es decir, los informes
-detallados sobre cada uno de los paquetes y de las funcionalidades implementadas en el proyecto. Estos informes recogen la
-funcionalidad principal de [investpy](https://github.com/alvarob96/investpy), [trendet](https://github.com/alvarob96/trendet) 
+* ``docs/``: en este directorio se encuentra tanto la memoria como la presentación del proyecto en pptx, además de la
+ficha descriptiva del proyecto. Adicionalmente, se pueden encontrar en este directorio los PDF generados a partir 
+de los Jupyter Notebooks, es decir, los informes detallados sobre cada uno de los paquetes y de las funcionalidades 
+implementadas en el proyecto. Estos informes recogen la funcionalidad principal de 
+[investpy](https://github.com/alvarob96/investpy), [trendet](https://github.com/alvarob96/trendet) 
 y [twipper](https://github.com/alvarob96/twipper); y, en consecuencia, la integración de los mismos para con la 
 plataforma a modo de estudio.
+
+* ``investpy/``: sub-módulo que contiene la referencia al paquete de Python creado para la extracción de los datos 
+históricos de las acciones del mercado continuo español a partir de la información indexada en Investing.com.
 
 * ``notebooks/``: en este directorio se recogen los Jupyter Notebooks creados tanto para justificar el uso y creación de
 los distintos paquetes de Python, como informes sobre su uso e integración entre ellos.
@@ -63,6 +67,15 @@ Por tanto, esta es la plataforma central del TCUE que integra el resto de módul
 a través de [twipper](https://github.com/alvarob96/twipper) de una forma más mecánica en sentimientos 
 (**positivo, neutral y negativo**), con el fin de utilizarlos más adelante de cara a crear un modelo de clasificación 
 para el análisis de sentimientos.
+
+* ``trendet/``: sub-módulo que contiene la referencia al paquete de Python creado para la identificación de tendencias
+en series temporales a partir de los valores de cierre de una acción, de modo que se identificarán las tendencias tanto
+alcistas como bajistas del mercado.
+
+* ``twipper/``: sub-módulo que contiene la referencia al paquete de Python creado para encapsular las llamadas a los
+_endpoint_ de la API de Twitter para las versiones tanto Free como Premium, en lo que a extracción de tweets se refiere.
+De este modo, este paquete permite al usuario interactuar con la API de Twitter a través de Python para la extracción de
+tweets tanto en batch como en streaming.
 
 ## Autor
 

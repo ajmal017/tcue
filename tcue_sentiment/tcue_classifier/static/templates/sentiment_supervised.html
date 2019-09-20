@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="Alvaro Bartolome del Canto">
 
-        <title>{% block title %}TCUE | Clasificación Supervisada de Tweets {% endblock %}</title>
+        <title>{% block title %}TCUE | Sentiment {% endblock %}</title>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
@@ -27,7 +27,7 @@
         <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
             <a href="{% url 'index' %}"><img src="{% static 'resources/tcue_es.png'%}" width="500" height="125"></a>
             <br/><br/><br/>
-            <p class="lead">{{ original_text|safe }}</p>
+            <p class="lead"><b>{{ original_text|safe }}</b></p>
             </br>
             <a class="btn btn-lg btn-success btn-block" role="button" href="{% url 'sentiment_positive' %}">Positivo</a>
             <a class="btn btn-lg btn-secondary btn-block" role="button" href="{% url 'sentiment_neutral' %}">Neutral</a>

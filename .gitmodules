@@ -1,3 +1,9 @@
 [submodule "investpy"]
 	path = investpy
 	url = https://github.com/alvarob96/investpy
+[submodule "trendet"]
+	path = trendet
+	url = https://github.com/alvarob96/trendet
+[submodule "twipper"]
+	path = twipper
+	url = https://github.com/alvarob96/twipper

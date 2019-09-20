@@ -212,52 +212,55 @@ def recommendation(request):
 
         regression_algorithms = {
             'MLPRegressor': {
-                'desc': 'A multilayer perceptron (MLP) is a class of feedforward artificial neural network. '
-                        'A MLP consists of at least three layers of nodes: an input layer, a hidden layer and an '
-                        'output layer. Except for the input nodes, each node is a neuron that uses a nonlinear '
-                        'activation function. MLP utilizes a supervised learning technique called backpropagation '
-                        'for training. Its multiple layers and non-linear activation distinguish MLP from a linear '
-                        'perceptron. It can distinguish data that is not linearly separable.',
+                'desc': 'Un perceptrón multicapa (MLP) es una clase de red neuronal artificial de retroalimentación. '
+                        'Una MLP consta de al menos tres capas de nodos: una capa de entrada, una capa oculta y una '
+                        'capa de salida. A excepción de los nodos de entrada, cada nodo es una neurona que utiliza una '
+                        'función de activación no lineal. MLP utiliza una técnica de aprendizaje supervisado llamada '
+                        'backpropagation para la formación. Sus múltiples capas y su activación no lineal distinguen '
+                        'al MLP de un perceptrón lineal. Puede distinguir datos que no son linealmente separables.',
                 'url': 'https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html'
             },
             'LinearSVR': {
-                'desc': 'In machine learning, support-vector machines (SVMs, also support-vector networks) are '
-                        'supervised learning models with associated learning algorithms that analyze data used for '
-                        'classification and regression analysis. Given a set of training examples, each marked as '
-                        'belonging to one or the other of two categories, an SVM training algorithm builds a model '
-                        'that assigns new examples to one category or the other, making it a non-probabilistic binary '
-                        'linear tcue_classifier (although methods such as Platt scaling exist to use SVM in a probabilistic '
-                        'classification setting). In SVR we try to fit the error within a certain threshold. Similar '
-                        'to SVR with parameter kernel=’linear’ in this case.',
+                'desc': 'En el aprendizaje automático, las máquinas vectoriales de apoyo (SVM, también llamadas redes '
+                        'vectoriales de apoyo) son modelos de aprendizaje supervisados con algoritmos de aprendizaje '
+                        'asociados que analizan los datos utilizados para la clasificación y el análisis de regresión. '
+                        'Dado un conjunto de ejemplos de entrenamiento, cada uno marcado como perteneciente a una '
+                        'u otra de las dos categorías, un algoritmo de entrenamiento SVM construye un modelo que asigna '
+                        'nuevos ejemplos a una u otra categoría, convirtiéndolo en un clasificador lineal binario no '
+                        'probabilístico tcue_classifier (aunque existen métodos como el escalado Platt para usar SVM '
+                        'en un entorno de clasificación probabilístico). En SVR intentamos ajustar el error dentro de '
+                        'un cierto umbral. Similar a SVR con el parámetro kernel=linear en este caso.',
                 'url': 'https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html'
             },
             'KNeighborsRegressor': {
-                'desc': 'In pattern recognition, the k-nearest neighbors algorithm (k-NN) is a non-parametric method '
-                        'used for classification and regression. In both cases, the input consists of the k closest '
-                        'training examples in the feature space. The output depends on whether k-NN is used for '
-                        'classification or regression, in k-NN regression, the output is the property value for '
-                        'the object. This value is the average of the values of k nearest neighbors.. The target '
-                        'is predicted by local interpolation of the targets associated of the nearest neighbors in '
-                        'the training set.',
+                'desc': 'En el reconocimiento de patrones, el algoritmo k-nearest neighbors (k-NN) es un método no '
+                        'paramétrico utilizado para la clasificación y regresión. En ambos casos, la entrada consiste '
+                        'en los ejemplos de entrenamiento más cercanos a k en el espacio de características. La salida '
+                        'depende de si k-NN se utiliza para la clasificación o la regresión, en la regresión k-NN, la '
+                        'salida es el valor de la propiedad del objeto. Este valor es el promedio de los valores de k '
+                        'de los vecinos más cercanos. El objetivo se predice mediante la interpolación local de los '
+                        'objetivos asociados a los vecinos más cercanos en el conjunto de entrenamiento.',
                 'url': 'https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html'
             },
             'GradientBoostingRegressor': {
-                'desc': 'Gradient boosting is a machine learning technique for regression and classification problems,'
-                        ' which produces a prediction model in the form of an ensemble of weak prediction models, '
-                        'typically decision trees. It builds the model in a stage-wise fashion like other boosting '
-                        'methods do, and it generalizes them by allowing optimization of an arbitrary differentiable '
-                        'loss function. Gradient boosting builds an additive model in a forward stage-wise fashion; it '
-                        'allows for the optimization of arbitrary differentiable loss functions. In each stage a '
-                        'regression tree is fit on the negative gradient of the given loss function.',
+                'desc': 'El aumento de gradiente es una técnica de aprendizaje automático para problemas de regresión y'
+                        ' clasificación, que produce un modelo de predicción en forma de un conjunto de modelos de '
+                        'predicción débiles, normalmente árboles de decisión. Construye el modelo de forma escénica, '
+                        'como lo hacen otros métodos de refuerzo, y los generaliza permitiendo la optimización de una '
+                        'función de pérdida arbitraria y diferenciable. El aumento de gradiente construye un modelo '
+                        'aditivo en una etapa avanzada; permite la optimización de funciones de pérdida diferenciables '
+                        'arbitrarias. En cada etapa se coloca un árbol de regresión en el gradiente negativo de la '
+                        'función de pérdida dada.',
                 'url': 'https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html'
             },
             'RandomForestRegressor': {
-                'desc': 'Random forests or random decision forests are an ensemble learning method for classification, '
-                        'regression and other tasks that operates by constructing a multitude of decision trees at '
-                        'training time and outputting the class that is the mode of the classes (classification) or '
-                        'mean prediction (regression) of the individual trees. A random forest is a meta estimator '
-                        'that fits a number of classifying decision trees on various sub-samples of the dataset and '
-                        'uses averaging to improve the predictive accuracy and control over-fitting.',
+                'desc': 'Los bosques aleatorios o bosques de decisión aleatoria son un método de aprendizaje conjunto '
+                        'para la clasificación, regresión y otras tareas que opera construyendo una multitud de árboles '
+                        'de decisión en el momento del entrenamiento y produciendo la clase que es el modo de las '
+                        'clases (clasificación) o la predicción media (regresión) de los árboles individuales. Un '
+                        'bosque aleatorio es un metaestimulador que se ajusta a una serie de árboles de decisión de '
+                        'clasificación en varias submuestras del conjunto de datos y utiliza el promediado para '
+                        'mejorar la precisión predictiva y el ajuste excesivo de control.',
                 'url': 'https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html'
             },
         }
