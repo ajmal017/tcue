@@ -25,7 +25,7 @@ SECRET_KEY = '*(&52ffd(&i!j73f#h9nzb0ckw+2g*0#9(5a1su48gz=y51_-e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['212.128.156.26', 'carlosenbisite.der.usal.es']
+ALLOWED_HOSTS = []
 
 
 # Application definition

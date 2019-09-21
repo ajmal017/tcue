@@ -10,10 +10,10 @@ from nltk.corpus import stopwords
 from django.shortcuts import render, redirect, render_to_response
 
 
-_USER = 'superAdmin'
-_PASS = 'eurostarusal33'
-_IP = '212.128.140.168'
-_PORT = '27017'
+_USER = 'MONGO USERNAME'
+_PASS = 'MONGO PASSWORD'
+_IP = 'MONGO IP'
+_PORT = 'MONGO PORT'
 
 mongodb = MongoClient(f'mongodb://{_USER}:{_PASS}@{_IP}:{_PORT}')
 

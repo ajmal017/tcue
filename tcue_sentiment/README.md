@@ -25,10 +25,10 @@ resultado de esta se vuelca en **MongoDB**, será necesario introducir las crede
 por lo que será necesario modificar los valores de los campos de acceso al inicio del fichero, de la forma: 
 
 ````python
-_USER = 'usuario'
-_PASS = 'contraseña'
-_IP = 'ip'
-_PORT = 'puerto de Mongo'
+_USER = 'MONGO USERNAME'
+_PASS = 'MONGO PASSWORD'
+_IP = 'MONGO IP'
+_PORT = 'MONGO PORT'
 
 mongodb = MongoClient(f'mongodb://{_USER}:{_PASS}@{_IP}:{_PORT}')
 ````
